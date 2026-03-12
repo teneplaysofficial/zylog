@@ -1,0 +1,12 @@
+ci:
+  autofix_commit_msg: 'chore: apply automatic fixes from pre-commit hooks'
+  autoupdate_commit_msg: 'chore: autoupdate hook versions'
+
+repos:
+  - repo: https://github.com/teneplaysofficial/pre-commit
+    rev: v1.0.0
+    hooks:
+      - id: biome
+      - id: prettier
+        additional_dependencies:
+          - '@tenedev/prettier-config@1.2.0'
