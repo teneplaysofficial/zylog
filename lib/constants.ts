@@ -28,14 +28,14 @@ export const LOG_LEVEL_LABELS = {
 } as const satisfies Record<ZylogLevel, string>;
 
 /**
- * Functional color mapping for each {@link ZylogLevel} output.
+ * Color mapping for each {@link ZylogLevel} output.
  */
-export const LEVEL_COLORIZERS = {
-  trace: (txt) => colors.gray.dim(txt),
-  debug: (txt) => colors.gray(txt),
-  info: (txt) => colors.blue.bold(txt),
-  success: (txt) => colors.green.bold(txt),
-  warn: (txt) => colors.yellow.bold(txt),
-  error: (txt) => colors.red.bold(txt),
-  fatal: (txt) => colors.white.bgRed.bold(txt),
+export const LEVEL_COLORS = {
+  trace: colors.gray,
+  debug: colors.cyan,
+  info: colors.blue,
+  success: colors.green,
+  warn: colors.yellow,
+  error: colors.red,
+  fatal: colors.bgRed.white.bold,
 } as const satisfies Record<ZylogLevel, (txt: string) => string>;
