@@ -1,7 +1,7 @@
 import { stderr, stdout } from 'node:process';
 import type { Writable } from 'node:stream';
 import { isObject } from 'js-utils-kit';
-import { colors as useColors } from 'use-colors';
+import colors from 'use-colors';
 import { LOG_LEVEL_PRIORITIES } from './constants';
 import type { ZylogConfig, ZylogLevel } from './types';
 
@@ -24,18 +24,19 @@ export function getStreamByLevel(level: ZylogLevel): Writable {
   }
 }
 
+/**
+ * Returns the formatted (optionally colorized) label for the given log level based on the logger configuration.
+ */
 export function formatLevel(level: ZylogLevel, config: ZylogConfig) {
-  const { colors, labels } = config;
+  const label = config.labels?.[level];
 
-  const label = labels?.[level];
-
-  if (colors && isObject(colors)) {
-    const style = colors[level];
+  if (config.colors && isObject(config.colors)) {
+    const style = config.colors[level];
 
     if (!style) return label;
 
     if (typeof style === 'function' && style.length === 1) {
-      const fn = style(useColors);
+      const fn = style(colors);
       return typeof fn === 'function' ? fn(label) : label;
     }
 
@@ -45,4 +46,38 @@ export function formatLevel(level: ZylogLevel, config: ZylogConfig) {
   }
 
   return label;
+}
+
+export function formatTimestamp(config: ZylogConfig) {
+  const d = new Date();
+  let ts = '';
+
+  switch (config.timestamp || 'utc') {
+    case 'utc': {
+      const iso = d.toISOString().replace('T', ' ').slice(0, 19);
+
+      if (config.hourFormat !== '12h') {
+        ts = iso;
+        break;
+      }
+
+      const h = d.getUTCHours();
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      const hh = (h % 12 || 12).toString().padStart(2, '0');
+
+      ts = `${iso.replace(/ \d{2}:/, ` ${hh}:`)} ${ampm}`;
+      break;
+    }
+
+    case 'locale':
+      ts = d
+        .toLocaleString('en-SE', {
+          hour12: config.hourFormat === '12h',
+        })
+        .replace(',', '')
+        .toUpperCase();
+      break;
+  }
+
+  return colors.gray(ts);
 }

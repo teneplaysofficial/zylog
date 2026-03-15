@@ -81,4 +81,27 @@ export interface ZylogConfig extends ZylogFormatOptions {
    * @default "info"
    */
   level?: ZylogLevel;
+
+  /**
+   * File logging configuration.
+   *
+   * Allows writing logs to files globally or per log level.
+   *
+   * @default { all: "logs/zylog.log", levels: {} }
+   */
+  streams?: {
+    /**
+     * File that receives all logs
+     *
+     * @default "logs/zylog.log"
+     */
+    all?: string;
+
+    /**
+     * File paths for specific log levels.
+     *
+     * Each level writes to its own file.
+     */
+    levels?: ZylogFormatOptions['labels'];
+  };
 }

@@ -1,5 +1,4 @@
-import colors from 'use-colors';
-import type { ZylogLevel } from './types';
+import type { ZylogConfig, ZylogLevel } from './types';
 
 /**
  * Numeric priority for log filtering.
@@ -30,12 +29,12 @@ export const LOG_LEVEL_LABELS = {
 /**
  * Color mapping for each {@link ZylogLevel} output.
  */
-export const LEVEL_COLORS = {
-  trace: colors.gray,
-  debug: colors.cyan,
-  info: colors.blue,
-  success: colors.green,
-  warn: colors.yellow,
-  error: colors.red,
-  fatal: colors.bgRed.white.bold,
-} as const satisfies Record<ZylogLevel, (txt: string) => string>;
+export const LEVEL_COLORS: Required<Exclude<ZylogConfig['colors'], 0>> = {
+  trace: (c) => c.gray,
+  debug: (c) => c.cyan,
+  info: (c) => c.blue,
+  success: (c) => c.green,
+  warn: (c) => c.yellow,
+  error: (c) => c.red,
+  fatal: (c) => c.bgRed.white.bold,
+};
