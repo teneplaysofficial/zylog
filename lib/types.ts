@@ -12,13 +12,13 @@ export interface ZylogFormatOptions {
    *
    * @default " "
    */
-  sep?: string;
+  sep?: string | undefined;
   /**
    * Line ending appended to each log entry.
    *
    * @default import("node:os").EOL
    */
-  end?: string;
+  end?: string | undefined;
   /**
    * Timestamp formatting mode.
    *
@@ -28,7 +28,7 @@ export interface ZylogFormatOptions {
    *
    * @default "utc"
    */
-  timestamp?: 'utc' | 'locale' | false;
+  timestamp?: 'utc' | 'locale' | false | undefined;
   /**
    * Hour format used in timestamps.
    *
@@ -37,7 +37,7 @@ export interface ZylogFormatOptions {
    *
    * @default "24h"
    */
-  hourFormat?: '24h' | '12h';
+  hourFormat?: '24h' | '12h' | undefined;
   /**
    * Optional prefix displayed before log messages.
    *
@@ -46,7 +46,7 @@ export interface ZylogFormatOptions {
    * [server] Listening on port 3000
    * ```
    */
-  prefix?: string;
+  prefix?: string | undefined;
   /**
    * Custom display labels for each log level.
    *
@@ -54,7 +54,7 @@ export interface ZylogFormatOptions {
    *
    * @example { warn: 'WRN', error: '!!!' }
    */
-  labels?: Partial<Record<ZylogLevel, string>>;
+  labels?: Partial<Record<ZylogLevel, string>> | undefined;
   /**
    * Custom styling for each log level.
    *
@@ -65,14 +65,17 @@ export interface ZylogFormatOptions {
    *
    * @example { trace: 0, fatal: (c) => c.red.bold.bgWhite }
    */
-  colors?: Partial<Record<ZylogLevel, (c: typeof colors) => typeof colors | string>> | 0;
+  colors?:
+    | Partial<Record<ZylogLevel, (c: typeof colors) => typeof colors | string>>
+    | 0
+    | undefined;
 }
 
 export interface ZylogConfig extends ZylogFormatOptions {
   /**
    * @default process.cwd()
    */
-  cwd?: string;
+  cwd?: string | undefined;
   /**
    * Minimum log level that will be displayed.
    *
@@ -80,7 +83,7 @@ export interface ZylogConfig extends ZylogFormatOptions {
    *
    * @default "info"
    */
-  level?: ZylogLevel;
+  level?: ZylogLevel | undefined;
 
   /**
    * File logging configuration.
@@ -89,19 +92,21 @@ export interface ZylogConfig extends ZylogFormatOptions {
    *
    * @default { all: "logs/zylog.log", levels: {} }
    */
-  streams?: {
-    /**
-     * File that receives all logs
-     *
-     * @default "logs/zylog.log"
-     */
-    all?: string;
+  streams?:
+    | {
+        /**
+         * File that receives all logs
+         *
+         * @default "logs/zylog.log"
+         */
+        all?: string;
 
-    /**
-     * File paths for specific log levels.
-     *
-     * Each level writes to its own file.
-     */
-    levels?: ZylogFormatOptions['labels'];
-  };
+        /**
+         * File paths for specific log levels.
+         *
+         * Each level writes to its own file.
+         */
+        levels?: ZylogFormatOptions['labels'];
+      }
+    | undefined;
 }

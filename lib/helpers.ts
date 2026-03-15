@@ -1,6 +1,5 @@
 import { stderr, stdout } from 'node:process';
 import type { Writable } from 'node:stream';
-import { isObject } from 'js-utils-kit';
 import colors from 'use-colors';
 import { LOG_LEVEL_PRIORITIES } from './constants';
 import type { ZylogConfig, ZylogLevel } from './types';
@@ -24,28 +23,14 @@ export function getStreamByLevel(level: ZylogLevel): Writable {
   }
 }
 
-/**
- * Returns the formatted (optionally colorized) label for the given log level based on the logger configuration.
- */
 export function formatLevel(level: ZylogLevel, config: ZylogConfig) {
   const label = config.labels?.[level];
+  const style = config.colors ? config.colors[level] : undefined;
 
-  if (config.colors && isObject(config.colors)) {
-    const style = config.colors[level];
+  if (!label || typeof style !== 'function') return label;
 
-    if (!style) return label;
-
-    if (typeof style === 'function' && style.length === 1) {
-      const fn = style(colors);
-      return typeof fn === 'function' ? fn(label) : label;
-    }
-
-    if (label && typeof style === 'function') {
-      return (style as unknown as (txt: string) => string)(label);
-    }
-  }
-
-  return label;
+  const fn = style(colors);
+  return typeof fn === 'function' ? fn(label) : label;
 }
 
 export function formatTimestamp(config: ZylogConfig) {
