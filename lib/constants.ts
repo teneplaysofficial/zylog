@@ -1,4 +1,4 @@
-import type { ZylogConfig, ZylogLevel } from './types';
+import type { ZylogConfig, ZylogLevel, ZylogOutputLevel } from './types';
 
 /**
  * Numeric priority for log filtering.
@@ -11,6 +11,7 @@ export const LOG_LEVEL_PRIORITIES = {
   warn: 20,
   error: 25,
   fatal: 30,
+  silent: Infinity,
 } as const satisfies Record<string, number>;
 
 /**
@@ -24,7 +25,7 @@ export const LOG_LEVEL_LABELS = {
   warn: 'WARN',
   error: 'ERROR',
   fatal: 'FATAL',
-} as const satisfies Record<ZylogLevel, string>;
+} as const satisfies Record<ZylogOutputLevel, string>;
 
 /**
  * Color mapping for each {@link ZylogLevel} output.

@@ -6,6 +6,11 @@ import type { LOG_LEVEL_PRIORITIES } from './constants';
  */
 export type ZylogLevel = keyof typeof LOG_LEVEL_PRIORITIES;
 
+/**
+ * Levels that actually produce log output.
+ */
+export type ZylogOutputLevel = Exclude<ZylogLevel, 'silent'>;
+
 export interface ZylogFormatOptions {
   /**
    * Separator used between log message parts.
@@ -54,7 +59,7 @@ export interface ZylogFormatOptions {
    *
    * @example { warn: 'WRN', error: '!!!' }
    */
-  labels?: Partial<Record<ZylogLevel, string>> | undefined;
+  labels?: Partial<Record<ZylogOutputLevel, string>> | undefined;
   /**
    * Custom styling for each log level.
    *
@@ -66,7 +71,7 @@ export interface ZylogFormatOptions {
    * @example { trace: 0, fatal: (c) => c.red.bold.bgWhite }
    */
   colors?:
-    | Partial<Record<ZylogLevel, (c: typeof colors) => typeof colors | string>>
+    | Partial<Record<ZylogOutputLevel, (c: typeof colors) => typeof colors | string>>
     | 0
     | undefined;
 }

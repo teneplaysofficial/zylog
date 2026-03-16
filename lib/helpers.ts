@@ -2,7 +2,7 @@ import { stderr, stdout } from 'node:process';
 import type { Writable } from 'node:stream';
 import colors from 'use-colors';
 import { LOG_LEVEL_PRIORITIES } from './constants';
-import type { ZylogConfig, ZylogLevel } from './types';
+import type { ZylogFormatOptions, ZylogLevel, ZylogOutputLevel } from './types';
 
 /**
  * Array of available log level keys for iteration or validation.
@@ -23,9 +23,9 @@ export function getStreamByLevel(level: ZylogLevel): Writable {
   }
 }
 
-export function formatLevel(level: ZylogLevel, config: ZylogConfig) {
-  const label = config.labels?.[level];
-  const style = config.colors ? config.colors[level] : undefined;
+export function formatLevel(level: ZylogOutputLevel, opts: ZylogFormatOptions) {
+  const label = opts.labels?.[level];
+  const style = opts.colors ? opts.colors[level] : undefined;
 
   if (!label || typeof style !== 'function') return label;
 
@@ -33,15 +33,15 @@ export function formatLevel(level: ZylogLevel, config: ZylogConfig) {
   return typeof fn === 'function' ? fn(label) : label;
 }
 
-export function formatTimestamp(config: ZylogConfig) {
+export function formatTimestamp(opts: ZylogFormatOptions) {
   const d = new Date();
   let ts = '';
 
-  switch (config.timestamp || 'utc') {
+  switch (opts.timestamp || 'utc') {
     case 'utc': {
       const iso = d.toISOString().replace('T', ' ').slice(0, 19);
 
-      if (config.hourFormat !== '12h') {
+      if (opts.hourFormat !== '12h') {
         ts = iso;
         break;
       }
@@ -57,7 +57,7 @@ export function formatTimestamp(config: ZylogConfig) {
     case 'locale':
       ts = d
         .toLocaleString('en-SE', {
-          hour12: config.hourFormat === '12h',
+          hour12: opts.hourFormat === '12h',
         })
         .replace(',', '')
         .toUpperCase();
