@@ -1,7 +1,7 @@
 {
   "name": "zylog",
   "displayName": "Zylog",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A simple and powerful logger for Node.js",
   "keywords": [
     "logger",
