@@ -1,0 +1,172 @@
+---
+title: Examples
+description: Real-world implementation patterns and best practices for Zylog.
+sidebar:
+  order: 2
+---
+
+import { Steps, Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+This guide demonstrates how to integrate Zylog into various application architectures, from CLI tools to high-traffic web servers.
+
+## Web Server Integration (Express.js)
+
+Implementing a robust request logger that captures method, path, and response time.
+
+```ts
+import express from 'express';
+import zylog from 'zylog';
+
+const app = express();
+
+// Request ID & Logger Middleware
+app.use((req, res, next) => {
+  const start = Date.now();
+  const reqId = Math.random().toString(36).substring(7);
+
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    zylog
+      .with({ prefix: `REQ:${reqId}` })
+      .info(`${req.method} ${req.url}`, `[${res.statusCode}]`, `in ${duration}ms`);
+  });
+
+  next();
+});
+
+app.get('/', (req, res) => res.send('Hello World'));
+
+app.listen(3000, () => {
+  zylog.success('Server listening on http://localhost:3000');
+});
+```
+
+## Database Performance Monitoring
+
+Using the `measure` utility to track slow queries and audit database interactions.
+
+```ts
+async function getUserWithAudit(userId: string) {
+  return await zylog.measure(`db:get_user:${userId}`, async () => {
+    const user = await db.users.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      zylog.warn(`Attempted access to non-existent user: ${userId}`);
+      return null;
+    }
+
+    zylog.debug(`User found: ${user.email}`);
+    return user;
+  });
+}
+```
+
+## Multi-Channel Logging (Production)
+
+Directing different severity levels to specific physical files while maintaining a master log.
+
+```ts
+import { Zylog } from 'zylog';
+
+const logger = new Zylog({
+  level: 'info',
+  streams: {
+    all: 'logs/system.log', // Every log line goes here
+    levels: {
+      error: 'logs/errors.log', // Only ERROR level
+      fatal: 'logs/crashes.log', // Only FATAL level
+      warn: 'logs/security.log', // Only WARN level
+    },
+  },
+});
+
+logger.createStream();
+
+// Usage
+logger.info('System healthy');
+logger.error('Database connection timeout - retrying');
+logger.fatal('Out of memory: terminating worker process');
+```
+
+## Microservices with Prefixes
+
+Managing log clarity in a system with multiple internal modules.
+
+```ts
+class AuthService {
+  private log = zylog.with({ prefix: 'AUTH-SVC' });
+
+  async login(user: string) {
+    this.log.info(`Login attempt for user: ${user}`);
+    // ... logic
+    this.log.success(`User ${user} logged in`);
+  }
+}
+
+class PaymentService {
+  private log = zylog.with({ prefix: 'PAY-SVC' });
+
+  async process() {
+    this.log.info('Starting transaction');
+    // ... logic
+  }
+}
+```
+
+## CLI Tool with Interactive Feedback
+
+Disabling timestamps and using custom labels for a cleaner command-line experience.
+
+```ts
+const cli = new Zylog({
+  timestamp: false,
+  prefix: 'zylog-cli',
+  labels: {
+    success: 'DONE',
+    info: 'WAIT',
+    error: 'FAIL',
+  },
+});
+
+async function deploy() {
+  cli.info('Uploading assets...');
+  try {
+    await performUpload();
+    cli.success('Deployment finished!');
+  } catch (e) {
+    cli.error('Deployment failed:', e.message);
+  }
+}
+```
+
+## Conditional Logging for Optimization
+
+Avoiding expensive object serialization or string concatenation in hot paths.
+
+```ts
+function processHugeDataset(data: any[]) {
+  zylog.info(`Processing ${data.length} records`);
+
+  // Only run this loop if we are actually going to see the output
+  if (zylog.isLevelEnabled('trace')) {
+    data.forEach((item, index) => {
+      zylog.trace(`Item ${index} details:`, JSON.stringify(item));
+    });
+  }
+}
+```
+
+## Error Reporting Integration
+
+Capturing stack traces and sending them to both the console and the error stream.
+
+```ts
+process.on('uncaughtException', (err) => {
+  zylog.fatal('UNCAUGHT EXCEPTION DETECTED');
+  zylog.error(err.stack);
+
+  // Ensure streams are closed before exiting
+  zylog.closeStream();
+  process.exit(1);
+});
+```

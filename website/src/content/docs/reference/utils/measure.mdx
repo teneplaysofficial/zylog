@@ -1,0 +1,65 @@
+---
+title: measure
+description: Profile function execution time with zero boilerplate.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+
+## Signature
+
+```ts
+async measure<T>(label: string, fn: () => Promise<T> | T): Promise<T>
+```
+
+## Description
+
+The `measure` utility is a high-level wrapper around `time()` and `timeEnd()`. It handles the lifecycle of a performance timer automatically, ensuring the result is logged even if the provided function throws an error.
+
+<Aside type="note">
+  The output is automatically logged at the `info` level using the format `[timer:label]
+  durationms`.
+</Aside>
+
+## Type Parameters
+
+| Parameter | Description                                                           |
+| :-------- | :-------------------------------------------------------------------- |
+| `<T>`     | The return type of the function being measured. Infers automatically. |
+
+---
+
+## Examples
+
+### Measuring an API Request
+
+Perfect for identifying slow external dependencies.
+
+```ts
+const userData = await zylog.measure('fetch-user-api', async () => {
+  const response = await fetch('https://api.example.com/user/1');
+  return response.json();
+});
+```
+
+### Profiling Database Queries
+
+Use it to monitor SQL execution time in development.
+
+```ts
+const users = await zylog.measure('db-query-all-users', () => {
+  return db.select().from(usersTable);
+});
+```
+
+### Handling Nested Logic
+
+`measure` handles both synchronous and asynchronous functions seamlessly.
+
+```ts
+function heavyComputation() {
+  // ... math logic
+  return 42;
+}
+
+const result = await zylog.measure('complex-math', heavyComputation);
+```

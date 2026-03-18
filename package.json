@@ -16,7 +16,7 @@
     "cli",
     "devtools"
   ],
-  "homepage": "https://teneplaysofficial.github.io/zylog",
+  "homepage": "https://zylog.vercel.app",
   "repository": "git+https://github.com/teneplaysofficial/zylog.git",
   "bugs": "https://github.com/teneplaysofficial/zylog/issues",
   "funding": "https://github.com/sponsors/teneplaysofficial",

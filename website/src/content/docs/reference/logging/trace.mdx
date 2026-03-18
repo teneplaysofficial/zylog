@@ -1,0 +1,20 @@
+---
+title: trace
+description: Logs a message at the TRACE level.
+---
+
+## Signature
+
+```ts
+trace(...params: unknown[]): void
+```
+
+## Description
+
+TRACE is the most verbose log level, typically used for detailed internal state during development.
+
+## Example
+
+```ts
+zylog.trace('Entering function', { id: 123 });
+```

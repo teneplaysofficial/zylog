@@ -1,0 +1,55 @@
+---
+title: with
+description: Chainable context overrides for surgical logging.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Signature
+
+```ts
+with(opts: ZylogFormatOptions): this
+```
+
+## Description
+
+The `with` method returns a proxy-like interface that applies specific formatting options to **exactly one** subsequent logging call. This is extremely useful for adding temporary context (like Request IDs or User IDs) without mutating the global logger state.
+
+<Aside type="tip">
+  This is the preferred way to implement contextual logging in middleware or event handlers.
+</Aside>
+
+---
+
+## Examples
+
+### Adding Request Context
+
+Commonly used in HTTP servers to trace logs back to a specific request.
+
+```ts
+function handleRequest(req, res) {
+  const reqId = req.headers['x-request-id'];
+
+  zylog.with({ prefix: `req:${reqId}` }).info('Processing payment');
+
+  // The next call returns to the default prefix
+  zylog.info('Normal log line');
+}
+```
+
+### Temporary Formatting Change
+
+Change the separator or line ending for a single complex log.
+
+```ts
+zylog.with({ sep: ' -> ', prefix: 'DEBUG' }).trace('Step 1', 'Step 2', 'Step 3');
+```
+
+### Chaining with JSON
+
+Combine with `json()` for structured, contextual output.
+
+```ts
+zylog.with({ prefix: 'AUDIT' }).json({ action: 'delete', userId: 501 }, 'warn');
+```

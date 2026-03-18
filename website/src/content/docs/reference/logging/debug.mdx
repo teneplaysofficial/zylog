@@ -1,0 +1,20 @@
+---
+title: debug
+description: Logs a message at the DEBUG level.
+---
+
+## Signature
+
+```ts
+debug(...params: unknown[]): void
+```
+
+## Description
+
+DEBUG logs are intended for troubleshooting and are typically disabled in production.
+
+## Example
+
+```ts
+zylog.debug('Cache size:', cache.size);
+```

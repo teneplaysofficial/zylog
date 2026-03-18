@@ -1,0 +1,28 @@
+---
+title: config
+description: Gets or updates the logger configuration.
+---
+
+## Signature
+
+```ts
+get config(): Readonly<ZylogConfig>
+set config(config: Partial<ZylogConfig>)
+```
+
+## Description
+
+The `config` property allows you to inspect or update the logger's settings. When getting the configuration, a shallow copy is returned to prevent accidental mutation. When setting, the provided configuration is merged with the existing configuration using a deep merge.
+
+## Example
+
+```ts
+// Update configuration
+zylog.config = {
+  prefix: 'AUTH',
+  sep: ' | ',
+};
+
+// Inspect configuration
+console.log(zylog.config.level);
+```

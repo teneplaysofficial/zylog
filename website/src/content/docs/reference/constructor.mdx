@@ -1,0 +1,78 @@
+---
+title: constructor
+description: Technical specification for initializing a Zylog instance.
+---
+
+import { Aside, Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Signature
+
+```ts
+constructor(config?: ZylogConfig)
+```
+
+## Description
+
+The constructor initializes the logger's internal state, merges user-provided configuration with library defaults, and registers signal listeners for `SIGINT`, `SIGTERM`, and `exit`.
+
+<Aside type="caution">
+  Calling the constructor multiple times is safe, but each instance maintains its own independent
+  file stream registry and timers.
+</Aside>
+
+## Parameters
+
+| Parameter | Type          | Description                                                    |
+| :-------- | :------------ | :------------------------------------------------------------- |
+| `config`  | `ZylogConfig` | Optional object to customize prefixes, levels, and formatting. |
+
+---
+
+## Examples
+
+### Basic Initialization
+
+Standard setup for a console-only logger.
+
+```ts
+import { Zylog } from 'zylog';
+
+const log = new Zylog({
+  prefix: 'app',
+  level: 'info',
+});
+```
+
+### Production Setup
+
+Configuring multi-file output for different severity levels.
+
+```ts
+const log = new Zylog({
+  level: 'debug',
+  streams: {
+    all: 'logs/combined.log',
+    levels: {
+      error: 'logs/critical-errors.log',
+      fatal: 'logs/system-crashes.log',
+    },
+  },
+});
+
+// Initialize the file streams after construction
+log.createStream();
+```
+
+### Custom Formatting
+
+Overriding labels and disabling colors for specific environments.
+
+```ts
+const log = new Zylog({
+  labels: {
+    warn: '!!',
+    error: 'ERR',
+  },
+  colors: 0, // Completely disable ANSI colors
+});
+```

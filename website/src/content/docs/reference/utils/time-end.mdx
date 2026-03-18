@@ -1,0 +1,22 @@
+---
+title: timeEnd
+description: Ends a timer and logs its duration.
+---
+
+## Signature
+
+```ts
+timeEnd(label: string): void
+```
+
+## Description
+
+Calculates the time elapsed since `time(label)` was called and logs the result at the `info` level.
+
+## Example
+
+```ts
+zylog.time('db');
+await query();
+zylog.timeEnd('db');
+```

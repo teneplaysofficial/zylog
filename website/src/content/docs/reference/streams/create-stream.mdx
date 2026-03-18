@@ -1,0 +1,26 @@
+---
+title: createStream
+description: Enables file logging by creating the configured log streams.
+---
+
+## Signature
+
+```ts
+createStream(): void
+```
+
+## Description
+
+Initializes the file write streams defined in the logger configuration. If directories in the file paths do not exist, they will be created automatically.
+
+## Example
+
+```ts
+const log = new Zylog({
+  streams: {
+    all: 'logs/app.log',
+  },
+});
+
+log.createStream();
+```

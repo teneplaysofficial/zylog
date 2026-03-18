@@ -1,0 +1,50 @@
+---
+title: json
+description: Structured logging for objects and data structures.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+## Signature
+
+```ts
+json(data: object, level: ZylogOutputLevel = 'info'): void
+```
+
+## Description
+
+The `json` method stringifies any JavaScript object into a pretty-printed JSON format (2-space indentation). This ensures that complex data structures are readable in the terminal and correctly formatted for file logs.
+
+---
+
+## Examples
+
+### Logging a Payload
+
+Standard usage for inspecting incoming data.
+
+```ts
+const user = { id: 1, name: 'Alice', roles: ['admin', 'editor'] };
+
+zylog.json(user);
+```
+
+### Critical Data Inspection
+
+Override the log level to ensure critical object state is captured in error logs.
+
+```ts
+try {
+  processData();
+} catch (err) {
+  zylog.json({ error: err.message, stack: err.stack }, 'error');
+}
+```
+
+### Using with Prefixes
+
+Add context to your JSON dumps.
+
+```ts
+zylog.with({ prefix: 'CONFIG' }).json(process.env, 'debug');
+```

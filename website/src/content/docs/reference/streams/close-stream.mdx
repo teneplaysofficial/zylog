@@ -1,0 +1,20 @@
+---
+title: closeStream
+description: Closes all active file streams.
+---
+
+## Signature
+
+```ts
+closeStream(): void
+```
+
+## Description
+
+Safely ends all open file streams and clears the internal stream registry. Streams are automatically closed on process exit, but this method can be called manually to flush buffers or stop file logging early.
+
+## Example
+
+```ts
+zylog.closeStream();
+```

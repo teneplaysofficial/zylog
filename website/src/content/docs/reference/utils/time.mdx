@@ -1,0 +1,20 @@
+---
+title: time
+description: Starts a performance timer.
+---
+
+## Signature
+
+```ts
+time(label: string): void
+```
+
+## Description
+
+Registers a high-resolution timestamp associated with the provided label. Use `timeEnd` to calculate and log the duration.
+
+## Example
+
+```ts
+zylog.time('db-query');
+```

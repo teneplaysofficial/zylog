@@ -1,0 +1,25 @@
+---
+title: enableColors
+description: Enables ANSI color output.
+---
+
+## Signature
+
+```ts
+enableColors(level?: 0 | 1 | 2 | 3): void
+```
+
+## Description
+
+Sets the color support level for terminal output.
+
+- `0`: disabled
+- `1`: basic colors
+- `2`: 256 colors
+- `3`: true color (default)
+
+## Example
+
+```ts
+zylog.enableColors(3);
+```

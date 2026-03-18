@@ -1,0 +1,22 @@
+---
+title: isLevelEnabled
+description: Determines whether a given log level will be emitted.
+---
+
+## Signature
+
+```ts
+isLevelEnabled(level: ZylogOutputLevel): boolean
+```
+
+## Description
+
+Returns `true` if the specified level is at or above the current minimum log level and the logger is not silenced. Useful for avoiding expensive computations for logs that won't be displayed.
+
+## Example
+
+```ts
+if (zylog.isLevelEnabled('debug')) {
+  zylog.debug(expensiveCalculation());
+}
+```

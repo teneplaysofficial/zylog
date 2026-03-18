@@ -1,0 +1,22 @@
+---
+title: silent
+description: Enables or disables all logging.
+---
+
+## Signature
+
+```ts
+get silent(): boolean
+set silent(value: boolean)
+```
+
+## Description
+
+When `silent` is enabled (`true`), no logs will be emitted regardless of the active log level.
+
+## Example
+
+```ts
+zylog.silent = true;
+zylog.info('This will not be shown');
+```
