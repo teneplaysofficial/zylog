@@ -16,13 +16,17 @@ Zylog uses a **Level-Based Filtering** architecture. Every log call is checked a
 Control how the logger behaves globally.
 
 <CardGrid>
-  <LinkCard title="config" description="Global instance settings." href="/api-reference/config" />
-  <LinkCard title="level" description="Minimum severity filter." href="/api-reference/level" />
-  <LinkCard title="silent" description="Global output toggle." href="/api-reference/silent" />
+  <LinkCard
+    title="config"
+    description="Global instance settings."
+    href="/reference/config/config"
+  />
+  <LinkCard title="level" description="Minimum severity filter." href="/reference/config/level" />
+  <LinkCard title="silent" description="Global output toggle." href="/reference/config/silent" />
   <LinkCard
     title="isLevelEnabled"
     description="Runtime level check."
-    href="/api-reference/is-level-enabled"
+    href="/reference/config/is-level-enabled"
   />
 </CardGrid>
 
@@ -33,22 +37,22 @@ Choose the right severity for your message.
 <Tabs>
   <TabItem label="Standard">
     <CardGrid>
-      <LinkCard title="info" href="/api-reference/info" />
-      <LinkCard title="success" href="/api-reference/success" />
-      <LinkCard title="warn" href="/api-reference/warn" />
-      <LinkCard title="error" href="/api-reference/error" />
+      <LinkCard title="info" href="/reference/logging/info" />
+      <LinkCard title="success" href="/reference/logging/success" />
+      <LinkCard title="warn" href="/reference/logging/warn" />
+      <LinkCard title="error" href="/reference/logging/error" />
     </CardGrid>
   </TabItem>
   <TabItem label="Development">
     <CardGrid>
-      <LinkCard title="trace" href="/api-reference/trace" />
-      <LinkCard title="debug" href="/api-reference/debug" />
-      <LinkCard title="json" href="/api-reference/json" />
+      <LinkCard title="trace" href="/reference/logging/trace" />
+      <LinkCard title="debug" href="/reference/logging/debug" />
+      <LinkCard title="json" href="/reference/logging/json" />
     </CardGrid>
   </TabItem>
   <TabItem label="Critical">
     <CardGrid>
-      <LinkCard title="fatal" href="/api-reference/fatal" />
+      <LinkCard title="fatal" href="/reference/logging/fatal" />
     </CardGrid>
   </TabItem>
 </Tabs>
@@ -58,16 +62,20 @@ Choose the right severity for your message.
 Manage file write streams and log persistence.
 
 <CardGrid>
-  <LinkCard title="streams" description="List active file paths." href="/api-reference/streams" />
+  <LinkCard
+    title="streams"
+    description="List active file paths."
+    href="/reference/streams/streams"
+  />
   <LinkCard
     title="createStream"
     description="Initialize file logging."
-    href="/api-reference/create-stream"
+    href="/reference/streams/create-stream"
   />
   <LinkCard
     title="closeStream"
     description="Safe shutdown of files."
-    href="/api-reference/close-stream"
+    href="/reference/streams/close-stream"
   />
 </CardGrid>
 
@@ -76,10 +84,10 @@ Manage file write streams and log persistence.
 Advanced instrumentation and context handling.
 
 <CardGrid>
-  <LinkCard title="with" description="Contextual chaining." href="/api-reference/with" />
-  <LinkCard title="measure" description="Auto-timer wrapper." href="/api-reference/measure" />
-  <LinkCard title="time" description="Manual start timer." href="/api-reference/time" />
-  <LinkCard title="timeEnd" description="Manual stop/log timer." href="/api-reference/time-end" />
+  <LinkCard title="with" description="Contextual chaining." href="/reference/utils/with" />
+  <LinkCard title="measure" description="Auto-timer wrapper." href="/reference/utils/measure" />
+  <LinkCard title="time" description="Manual start timer." href="/reference/utils/time" />
+  <LinkCard title="timeEnd" description="Manual stop/log timer." href="/reference/utils/time-end" />
 </CardGrid>
 
 ## Visuals
@@ -88,11 +96,11 @@ Advanced instrumentation and context handling.
   <LinkCard
     title="enableColors"
     description="Set ANSI support level."
-    href="/api-reference/enable-colors"
+    href="/reference/config/enable-colors"
   />
   <LinkCard
     title="disableColors"
     description="Strip all ANSI codes."
-    href="/api-reference/disable-colors"
+    href="/reference/config/disable-colors"
   />
 </CardGrid>
